@@ -1,0 +1,14 @@
+{
+  "name": "planb",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev:server": "pnpm --filter @planb/server dev",
+    "dev:web": "pnpm --filter @planb/web dev",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @planb/server test",
+    "build": "pnpm --filter @planb/web build && pnpm --filter @planb/server build"
+  },
+  "pnpm": { "onlyBuiltDependencies": ["better-sqlite3", "esbuild"] }
+}
