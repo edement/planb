@@ -78,7 +78,8 @@ rclone config                                   # настроить внешн�
 ```bash
 gpg -d planb-YYYYMMDD-HHMMSS.db.gpg > planb.db
 docker compose stop app
-docker compose cp planb.db app:/data/planb.db     # затем: docker compose run --rm --no-deps -u root app rm -f /data/planb.db-wal /data/planb.db-shm
+docker compose run --rm --no-deps -u root -v "$PWD":/restore app sh -c \
+  'rm -f /data/planb.db-wal /data/planb.db-shm && cp /restore/planb.db /data/planb.db && chown node:node /data/planb.db'
 docker compose start app
 ```
 **Обязательно один раз проверьте восстановление** на тестовой копии, прежде чем на него полагаться.
