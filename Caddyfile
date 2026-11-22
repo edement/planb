@@ -1,5 +1,0 @@
-# HTTPS-сертификат Let's Encrypt выпускается и продлевается автоматически.
-{$DOMAIN} {
-	encode gzip
-	reverse_proxy app:3000
-}
