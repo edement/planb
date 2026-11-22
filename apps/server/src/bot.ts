@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Bot, InlineKeyboard } from 'grammy';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 import type { Attachment } from '@planb/shared';
 import type { Config } from './config';
 import { getCtx, getToday } from './data';
@@ -25,7 +26,8 @@ const attachmentOf = (m: any): Attachment | null => {
 };
 
 export function createBot(cfg: Config, db: DB, log: { error(o: object, m?: string): void }): Bot {
-  const bot = new Bot(cfg.BOT_TOKEN);
+  const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+  const bot = new Bot(cfg.BOT_TOKEN, proxy ? {client: {baseFetchConfig: {agent: new HttpsProxyAgent(proxy)}}} : {});
   const open = (target: string, label = 'Открыть'): InlineKeyboard => keyboard([[{ text: label, web: openUrl(cfg.WEBAPP_URL, target) }]]);
 
   bot.catch((e) => log.error({ err: String(e.error) }, 'bot error'));
